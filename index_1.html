@@ -1,38 +1,100 @@
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
+<style>
+  body {
+    background-color: #ffe6e6; 
+  }
+
+  input[type="text"] {
+    background-color: #f9f9f9; 
+    border: 1px solid #ccc;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    width: 200px;
+  }
+
+  button {
+    background-color: #ff66b2; 
+    color: white;
+    padding: 8px 12px;
+    margin: 5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #e60073; 
+  }
+
+  table {
+    width: 60%;
+    margin-top: 20px;
+    border-collapse: collapse;
+  }
+
+  table, th, td {
+    border: 1px solid black;
+    padding: 10px;
+    text-align: center; 
+  }
+
+  th {
+    background-color: #ff66b2; 
+    color: white;
+  }
+</style>
+
 <h1>CALCULADORA</h1>
 
 <div id="app">
    <div>
-    nombre : <input type="text" v-model="persona.nombre" />
+    nombre: <input type="text" v-model="persona.nombre" />
    </div>
    <div>
-    apellido : <input type="text" v-model="persona.apellido" />
+    apellido: <input type="text" v-model="persona.apellido" />
    </div>
    <div>
-    celular : <input type="text" v-model="persona.celular" />
+    celular: <input type="text" v-model="persona.celular" />
    </div>
    <div>
-    email : <input type="text" v-model="persona.email" />
+    email: <input type="text" v-model="persona.email" />
    </div>
 
     <button @click="registrar">Registrar</button>
     
-    <div>
-      <h5>Listado de Estudiantes</h5>
-      <ul>
-        <li v-for="(data,index) in listado" :key="index">{{ data.nombre }} {{ data.apellido }} - {{ data.celular }} - {{ data.email }}
-          <button @click="eliminar(index)" style="margin-left: 10px;">X</button>
-        </li>
-      </ul>
-      <h3>No. Estudiantes: {{ listado.length }}</h3>
-    </div>
+    <h3>Listado de Estudiantes</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Celular</th>
+          <th>Email</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(data, index) in listado" :key="index">
+          <td>{{ data.nombre }}</td>
+          <td>{{ data.apellido }}</td>
+          <td>{{ data.celular }}</td>
+          <td>{{ data.email }}</td>
+          <td>
+            <button @click="eliminar(index)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>No. Estudiantes: {{ listado.length }}</h3>
 
     <pre>{{$data}}</pre>
 </div>
 
 <script>
-  const { createApp } = Vue
+  const { createApp } = Vue;
 
   createApp({
     data() {
@@ -48,9 +110,13 @@
     },
     methods: {
       registrar() {
-        const copy = { ...this.persona };
-        this.listado.push(copy);
-        this.limpiar();
+        if (this.persona.nombre && this.persona.apellido && this.persona.celular && this.persona.email) {
+          const nuevoEstudiante = { ...this.persona };
+          this.listado.push(nuevoEstudiante);
+          this.limpiar();
+        } else {
+          alert("Por favor, completa todos los campos.");
+        }
       },
       limpiar() {
         this.persona.nombre = '';
@@ -58,8 +124,8 @@
         this.persona.celular = '';
         this.persona.email = '';
       },
-      eliminar(pos) {
-        this.listado.splice(pos, 1);
+      eliminar(index) {
+        this.listado.splice(index, 1);
       }
     }
   }).mount('#app');

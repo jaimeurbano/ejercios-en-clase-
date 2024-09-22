@@ -1,22 +1,69 @@
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
+<style>
+  body {
+    background-color: #ccffcc; 
+  }
+
+  input[type="text"], input[type="number"] {
+    background-color: #f2f2f2; 
+    border: 1px solid #ccc;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    width: 200px;
+  }
+
+  button {
+    background-color: #4CAF50; 
+    color: white;
+    padding: 8px 12px;
+    margin: 5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #45a049; 
+  }
+
+  table {
+    width: 50%;
+    margin-top: 20px;
+    border-collapse: collapse;
+  }
+
+  table, th, td {
+    border: 1px solid black;
+    padding: 10px;
+  }
+
+  th, td {
+    text-align: center; 
+  }
+
+  th {
+    background-color: #4CAF50; 
+    color: white;
+  }
+</style>
+
 <h1>CALCULADORA</h1>
 
 <div id="app">
-  <!-- Inputs para nombre, edad y grado -->
+  
   nombre: <input type="text" v-model="nombre" /><br />
   edad: <input type="number" v-model="edad" /><br />
   grado: <input type="text" v-model="grado" /><br />
 
-  <!-- Botón para registrar el estudiante -->
+  
   <button @click="registrar">Registrar</button>
   
-  <!-- Botón para eliminar todos los estudiantes -->
   <button @click="eliminarTodo">Eliminar Todo</button>
 
-  <!-- Listado de estudiantes en una tabla -->
   <h3>Listado de Estudiantes</h3>
-  <table border="1">
+  <table>
     <thead>
       <tr>
         <th>Nombre</th>
@@ -28,17 +75,15 @@
     <tbody>
       <tr v-for="(estudiante, index) in listado" :key="index">
         <td>{{ estudiante.nombre }}</td>
-        <td>{{ estudiante.edad }} </td>
+        <td>{{ estudiante.edad }} años</td>
         <td>{{ estudiante.grado }}</td>
         <td>
-          <!-- Botón para eliminar estudiante individual -->
           <button @click="eliminarUno(index)">Eliminar</button>
         </td>
       </tr>
     </tbody>
   </table>
 
-  <!-- Mostrar la información actual de Vue -->
   <pre>{{$data}}</pre>
 </div>
 
@@ -49,7 +94,7 @@
     data() {
       return {
         nombre: "",
-        edad: "",
+        edad: null,
         grado: "",
         listado: []
       };
@@ -63,14 +108,14 @@
             grado: this.grado
           };
           this.listado.push(nuevoEstudiante);
-          this.limpiarCampos(); // Limpiar los campos después de registrar
+          this.limpiarCampos(); 
         } else {
           alert("Por favor, completa todos los campos.");
         }
       },
       limpiarCampos() {
         this.nombre = "";
-        this.edad = "";
+        this.edad = null;
         this.grado = "";
       },
       eliminarTodo() {
