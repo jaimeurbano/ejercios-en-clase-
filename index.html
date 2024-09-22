@@ -1,0 +1,30 @@
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+<h1>CALCULADORA</h1>
+
+<div id="app">
+  nombre : <input type="text" v-model="nombre" />
+  <button @click="registrar">Registrar</button>
+
+  <pre>{{$data}}</pre>
+</div>
+
+<script>
+  const { createApp } = Vue
+
+  createApp({
+    data() {
+      return {
+        nombre: "",
+        listado: []
+      };
+    },
+    methods: {
+      registrar() {
+        const copy = this.nombre;
+        this.listado.push(copy);
+        this.nombre = ""; // Limpiar el input después de registrar
+      }
+    }
+  }).mount('#app');
+</script>

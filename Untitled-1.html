@@ -1,0 +1,84 @@
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+<h1>CALCULADORA</h1>
+
+<div id="app">
+  <!-- Inputs para nombre, edad y grado -->
+  nombre: <input type="text" v-model="nombre" /><br />
+  edad: <input type="number" v-model="edad" /><br />
+  grado: <input type="text" v-model="grado" /><br />
+
+  <!-- Botón para registrar el estudiante -->
+  <button @click="registrar">Registrar</button>
+  
+  <!-- Botón para eliminar todos los estudiantes -->
+  <button @click="eliminarTodo">Eliminar Todo</button>
+
+  <!-- Listado de estudiantes en una tabla -->
+  <h3>Listado de Estudiantes</h3>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Edad</th>
+        <th>Grado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="(estudiante, index) in listado" :key="index">
+        <td>{{ estudiante.nombre }}</td>
+        <td>{{ estudiante.edad }} </td>
+        <td>{{ estudiante.grado }}</td>
+        <td>
+          <!-- Botón para eliminar estudiante individual -->
+          <button @click="eliminarUno(index)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Mostrar la información actual de Vue -->
+  <pre>{{$data}}</pre>
+</div>
+
+<script>
+  const { createApp } = Vue
+
+  createApp({
+    data() {
+      return {
+        nombre: "",
+        edad: "",
+        grado: "",
+        listado: []
+      };
+    },
+    methods: {
+      registrar() {
+        if (this.nombre && this.edad && this.grado) {
+          const nuevoEstudiante = {
+            nombre: this.nombre,
+            edad: this.edad,
+            grado: this.grado
+          };
+          this.listado.push(nuevoEstudiante);
+          this.limpiarCampos(); // Limpiar los campos después de registrar
+        } else {
+          alert("Por favor, completa todos los campos.");
+        }
+      },
+      limpiarCampos() {
+        this.nombre = "";
+        this.edad = "";
+        this.grado = "";
+      },
+      eliminarTodo() {
+        this.listado = [];
+      },
+      eliminarUno(index) {
+        this.listado.splice(index, 1);
+      }
+    }
+  }).mount('#app');
+</script>
